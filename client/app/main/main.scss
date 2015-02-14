@@ -34,8 +34,12 @@
 
  }
 
- .identityBox{
-   padding-top:40px;
+ .heroBox{
+ 	padding-top: 80px;
+   img {
+   	background-color:rgba(255,255,255,.6);
+   	width:100%;
+   }
  }
 .error{
   color:black;

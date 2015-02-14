@@ -25,17 +25,19 @@ exports.show = function(req, res) {
 
 // Get a single organization
 exports.findByCode = function(req, res) {
+	var flag = false;
   Organization.find(function (err, organizations) {
     if(err) { return handleError(res, err); }
     if(!organizations) { return res.send(404); }
-    organizations.forEach(function(organization){
+    organizations.forEach(function(organization,index){
       var id = organization._id.toString();
       console.log(id.substr(id.length-4),req.params.id);
       if(id.substr(id.length-4) === req.params.id){
+      	flag = true;
         return res.json(organization);
       }
+      if(index === organizations.length -1) return res.send(404);
     });
-    return res.send(404);
   });
 };
 
