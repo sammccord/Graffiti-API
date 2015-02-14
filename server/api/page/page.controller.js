@@ -27,7 +27,7 @@ exports.show = function(req, res) {
         console.log(organization);
         if(!organization) return res.send(404);
         if(organization.pages.length === 0) return res.send(404);
-        organization.pages.forEach(function(page){
+        organization.pages.forEach(function(page,index){
           if(page.ref === req.params.page_ref){
             foundPage = true;
             Page.findById(page._id)
@@ -43,8 +43,8 @@ exports.show = function(req, res) {
                 return res.json(page)
               })
           }
+          // if(index === organization.pages.length -1) return res.send(404);
         });
-        if(foundPage === false) return res.send(404);
       });
 };
 

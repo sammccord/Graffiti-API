@@ -12,7 +12,7 @@ var SpraySchema = new Schema({
     targetText: String,
     targetDiv: String,
     targetImage: String,
-    spray_color:{type:String, default:'rgba(255, 64, 129,0.8)'},
+    spray_color:{type:String, default:'rgb(96, 96, 96)'},
     pageRef: {
       type: Schema.Types.ObjectId,
       ref: 'Page'
