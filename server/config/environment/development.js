@@ -8,5 +8,5 @@ module.exports = {
     uri: 'mongodb://localhost/graffitiapi-dev'
   },
 
-  seedDB: false
+  seedDB: true
 };
