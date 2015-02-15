@@ -41,7 +41,8 @@ exports.create = function(req, res) {
         async.series([function(callback){
           spray = new Spray({
             targetText: req.body.targetText,
-            pageRef: page._id
+            pageRef: page._id,
+            p_index:req.body.p_index ? req.body.p_index : -1
           });
           callback();
         },function(callback){

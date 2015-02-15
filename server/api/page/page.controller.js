@@ -33,12 +33,11 @@ exports.show = function(req, res) {
             Page.findById(page._id)
               .deepPopulate('sprays.comments')
               .exec(function(err,page){
-                console.log(page);
                 if (err) {
                   return handleError(res, err);
                 }
                 if (!page) {
-                  return res.send(404);
+                  return res.json({});
                 }
                 return res.json(page)
               })
@@ -67,7 +66,8 @@ exports.create = function(req, res) {
 
       var spray = new Spray({
         pageRef: page._id,
-        targetText:req.body.targetText
+        targetText:req.body.targetText,
+        p_index: req.body.p_index ? req.body.p_index : -1
       });
 
       var comment = new Comment({
