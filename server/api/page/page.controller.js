@@ -24,7 +24,6 @@ exports.show = function(req, res) {
     Organization.findById(req.params.org_id)
       .populate('pages')
       .exec(function(err,organization){
-        console.log(organization);
         if(!organization) return res.send(404);
         if(organization.pages.length === 0) return res.send(404);
         organization.pages.forEach(function(page,index){
@@ -50,9 +49,7 @@ exports.show = function(req, res) {
 // Creates a new page in the DB.
 exports.create = function(req, res) {
   console.log(req.body);
-  console.log(req.body.org_id);
   Organization.findById(req.body.org_id,function(err,organization){
-  	console.log(organization);
   	if (!organization) {
             return res.send(404);
         }
@@ -60,7 +57,6 @@ exports.create = function(req, res) {
       name:req.body.ref+':'+organization._id,
       ref:req.body.ref
     },function(err,page){
-      console.log(arguments);
       organization.pages.push(page._id);
       organization.save();
 

@@ -27,7 +27,6 @@ exports.show = function(req, res) {
             if (!spray) {
                 return res.send(404);
             }
-            console.log(spray);
             return res.json(spray);
         });
 };
@@ -70,7 +69,6 @@ exports.create = function(req, res) {
           })
         }],
         function(err,results){
-          console.log('CREATING SPRAY');
           return res.send(200);
         });
 

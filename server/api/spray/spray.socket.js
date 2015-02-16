@@ -21,10 +21,9 @@ function onSave(socket, doc, cb) {
     .deepPopulate('sprays.comments')
     .exec(function(err,page){
       if(!page){
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!NO PAGE FOUND');
+        console.log('!!!!NO PAGE FOUND');
         return false;
       }
-      console.log('SOCKET EMIT',arguments);
       socket.to('page/'+page._id).emit('update',page);
     });
 }
