@@ -25,7 +25,7 @@ exports.show = function(req, res) {
 
 // Get a single organization
 exports.findByCode = function(req, res) {
-	var flag = false;
+  var found = false;
   Organization.find(function (err, organizations) {
     if(err) { return handleError(res, err); }
     if(!organizations) { return res.send(404); }
@@ -33,10 +33,10 @@ exports.findByCode = function(req, res) {
       var id = organization._id.toString();
       console.log(id.substr(id.length-4),req.params.id);
       if(id.substr(id.length-4) === req.params.id){
-      	flag = true;
+        found = true;
         return res.json(organization);
       }
-      if(index === organizations.length -1) return res.send(404);
+      if(index === organizations.length -1 && found === false) return res.send(404);
     });
   });
 };
