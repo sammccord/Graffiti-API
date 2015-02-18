@@ -29,7 +29,7 @@ exports.show = function(req, res) {
         organization.pages.forEach(function(page,index){
           if(page.ref === req.params.page_ref){
             foundPage = true;
-            Page.findById(page._id)
+            Page.findOneAndUpdate({_id:page._id},{page_ref:req.params.page_ref},{upsert:true})
               .deepPopulate('sprays.comments')
               .exec(function(err,page){
                 if (err) {
