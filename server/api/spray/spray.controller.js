@@ -35,7 +35,7 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
     console.log('SPRAY CREATE', req.body);
     Page.findById(req.body.page_id, function(err, page) {
-        var spray,comment;
+        var spray,comment,saved_spray;
 
         async.series([function(callback){
           spray = new Spray({
@@ -65,11 +65,12 @@ exports.create = function(req, res) {
           })
         },function(callback){
           spray.save(function(err,spray){
+          	saved_spray = spray;
             callback();
           })
         }],
         function(err,results){
-          return res.send(200);
+          return res.send(saved_spray);
         });
 
 

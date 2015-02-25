@@ -77,7 +77,17 @@ exports.create = function(req, res) {
         spray.save(function(err,spray){
           page.sprays.push(spray._id);
           page.save(function(err,page){
-            return res.send(200);
+          	Page.findById(page._id)
+          	.deepPopulate('sprays.comments')
+        		.exec(function(err,page){
+              if (err) {
+                return handleError(res, err);
+              }
+              if (!page) {
+                return res.json({});
+              }
+              return res.json(page)
+            })
           });
         })
       })

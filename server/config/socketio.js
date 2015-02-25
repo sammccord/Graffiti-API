@@ -66,6 +66,6 @@ module.exports = function (socketio) {
 
   });
 
-  require('../api/spray/spray.socket').register(socketio);
+  // require('../api/spray/spray.socket').register(socketio);
 
 };

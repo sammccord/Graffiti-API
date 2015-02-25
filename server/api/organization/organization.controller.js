@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var async = require('async');
 var Organization = require('./organization.model');
 
 var Spray = require('../spray/spray.model');
@@ -21,6 +22,28 @@ exports.show = function(req, res) {
     if(!organization) { return res.send(404); }
     return res.json(organization);
   });
+};
+
+exports.getFeed = function(req,res){
+  res.send(200);
+  if(!req.body.org_ids || typeof req.body.org_ids !== 'object') res.send(404);
+  Organization.find({
+    '_id': { $in: req.body.org_ids}
+  }).deepPopulate('pages.sprays.comments').exec(function(err,orgs){
+    if(err) { return handleError(res, err); }
+    var _comments = [];
+    for(var i = 0, j=orgs.length;i<j;i++){
+      for(var p = 0, s=orgs[i].pages.length; p < s; p++){
+        var page_ref = orgs[i].pages[p].ref;
+        for(var c = 0, l= orgs[i].pages[p].comments.length; c< l;c++){
+          _comments.push({
+            page_ref:page_ref,
+            comment:orgs[i].pages[p].comments[c]
+          });
+        }
+      }
+    }
+  })
 };
 
 // Get a single organization

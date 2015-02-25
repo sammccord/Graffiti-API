@@ -6,6 +6,7 @@ var controller = require('./organization.controller');
 var router = express.Router();
 
 router.get('/', controller.index);
+router.post('/feed',controller.getFeed);
 router.get('/:id', controller.show);
 router.get('/code/:id', controller.findByCode);
 router.post('/', controller.create);
