@@ -70,7 +70,12 @@ exports.create = function(req, res) {
           })
         }],
         function(err,results){
-          return res.send(saved_spray);
+          Spray.findById(saved_spray._id)
+          .populate('comments')
+          .exec(function(err,spray){
+          	if (err) return handleError(res, err);
+          	return res.json(spray);
+          })
         });
 
 

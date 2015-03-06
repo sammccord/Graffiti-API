@@ -25,24 +25,24 @@ exports.show = function(req, res) {
 };
 
 exports.getFeed = function(req,res){
-  res.send(200);
-  if(!req.body.org_ids || typeof req.body.org_ids !== 'object') res.send(404);
+  if(!req.body['_ids[]']) res.send(404);
+  var _ids = typeof(req.body['_ids[]']) === 'string' ? [req.body['_ids[]']] : req.body['_ids[]'];
   Organization.find({
-    '_id': { $in: req.body.org_ids}
-  }).deepPopulate('pages.sprays.comments').exec(function(err,orgs){
+    '_id': { $in: _ids}
+  }).populate({
+  path: 'pages',
+  select: 'ref sprays',
+  options: { limit: 5 }
+}).exec(function(err,orgs){
     if(err) { return handleError(res, err); }
-    var _comments = [];
-    for(var i = 0, j=orgs.length;i<j;i++){
-      for(var p = 0, s=orgs[i].pages.length; p < s; p++){
-        var page_ref = orgs[i].pages[p].ref;
-        for(var c = 0, l= orgs[i].pages[p].comments.length; c< l;c++){
-          _comments.push({
-            page_ref:page_ref,
-            comment:orgs[i].pages[p].comments[c]
-          });
-        }
-      }
-    }
+    console.log(orgs);
+    var pages = [];
+    orgs.forEach(function(org){
+    	console.log(org.pages);
+    	pages = pages.concat(org.pages);
+    });
+    console.log(pages);
+    return res.json(pages);
   })
 };
 

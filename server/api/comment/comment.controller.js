@@ -40,7 +40,10 @@ exports.create = function(req, res) {
         comment.save(function(err, comment) {
             spray.comments.push(comment._id);
             spray.save(function(err, spray) {
-                res.json(comment);
+                res.json({
+                	comment:comment,
+                	spray_id:spray._id
+                })
             })
         })
     })
