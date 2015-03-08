@@ -54,6 +54,8 @@ exports.create = function(req, res) {
             return res.send(404);
         }
     Page.create({
+    	url:req.body.url,
+    	title:req.body.title,
       name:req.body.ref+':'+organization._id,
       ref:req.body.ref
     },function(err,page){

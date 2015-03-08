@@ -18,7 +18,15 @@ var CommentSchema = new Schema({
         ref: 'Comment'
     }],
     text: String,
-    createdAt: {type: Date, default: Date.now()}
+    createdAt: {type: Date}
+});
+
+CommentSchema.pre('save', function(next){
+  var now = new Date();
+  if ( !this.createdAt ) {
+    this.createdAt = now;
+  }
+  next();
 });
 
 CommentSchema.plugin(deepPopulate, {});

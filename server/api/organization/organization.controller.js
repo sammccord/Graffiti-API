@@ -31,7 +31,7 @@ exports.getFeed = function(req,res){
     '_id': { $in: _ids}
   }).populate({
   path: 'pages',
-  select: 'ref sprays',
+  select: 'ref sprays url title updatedAt',
   options: { limit: 5 }
 }).exec(function(err,orgs){
     if(err) { return handleError(res, err); }
@@ -41,8 +41,16 @@ exports.getFeed = function(req,res){
     	console.log(org.pages);
     	pages = pages.concat(org.pages);
     });
-    console.log(pages);
-    return res.json(pages);
+
+    function updated(a,b) {
+		  if (a.updatedAt > b.updatedAt)
+		     return -1;
+		  if (a.updatedAt < b.updatedAt)
+		    return 1;
+		  return 0;
+		}
+
+    return res.json(pages.sort(updated));
   })
 };
 
