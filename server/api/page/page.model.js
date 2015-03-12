@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var deepPopulate = require('mongoose-deep-populate');
+var findOrCreate = require('mongoose-findorcreate')
 
 var PageSchema = new Schema({
 		url:{
@@ -40,5 +41,6 @@ PageSchema.pre('save', function(next){
 });
 
 PageSchema.plugin(deepPopulate, {});
+PageSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model('Page', PageSchema);

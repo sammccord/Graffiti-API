@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 var deepPopulate = require('mongoose-deep-populate');
 
 var OrganizationSchema = new Schema({
+	publicViewable:{type:Boolean,default:false},
   name: String,
   info: String,
   active: Boolean,

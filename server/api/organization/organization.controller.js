@@ -7,12 +7,22 @@ var Organization = require('./organization.model');
 var Spray = require('../spray/spray.model');
 var Comment = require('../comment/comment.model.js');
 
+var mergeFeed = require('../../components/mergeFeed');
+
 // Get list of organizations
 exports.index = function(req, res) {
-  Organization.find(function (err, organizations) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, organizations);
-  });
+	if(req.query.public){
+		Organization.find({publicViewable:true}, function(err, organizations) {
+    	if(err) { return handleError(res, err); }
+   	 return res.json(200, organizations);
+  	});
+	}
+	else{
+		 Organization.find(function (err, organizations) {
+    	if(err) { return handleError(res, err); }
+   	 return res.json(200, organizations);
+  	});
+	}
 };
 
 // Get a single organization
@@ -35,22 +45,10 @@ exports.getFeed = function(req,res){
   options: { limit: 5 }
 }).exec(function(err,orgs){
     if(err) { return handleError(res, err); }
-    console.log(orgs);
-    var pages = [];
-    orgs.forEach(function(org){
-    	console.log(org.pages);
-    	pages = pages.concat(org.pages);
-    });
-
-    function updated(a,b) {
-		  if (a.updatedAt > b.updatedAt)
-		     return -1;
-		  if (a.updatedAt < b.updatedAt)
-		    return 1;
-		  return 0;
-		}
-
-    return res.json(pages.sort(updated));
+    var f = mergeFeed(orgs);
+	  console.log(f);
+	  if (!f) return res.send(404);
+	  res.json(f);
   })
 };
 
